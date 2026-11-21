@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>Lumina AI | Studio de Vídeos</title>
+<title>Lumina | Studio de Vídeos</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@600;700&display=swap');
 :root{--black:#050505;--panel:#0d0e0e;--panel2:#141515;--line:#292929;--gold:#e88b08;--gold2:#ffad24;--gold3:#9d5c08;--white:#f6f6f4;--muted:#a1a19d;--radius:14px}
@@ -136,7 +136,7 @@ progress{width:100%;height:6px;display:block;margin-top:14px;accent-color:var(--
 <header class="topbar">
   <a class="brand" href="#">
     <div class="brand-symbol">L</div>
-    <div><div class="brand-name">LUMINA <span>AI</span></div><div class="brand-sub">AUTO CARE · STUDIO</div></div>
+    <div><div class="brand-name">LUMINA</div><div class="brand-sub">AUTO CARE · STUDIO</div></div>
   </a>
   <nav class="nav">
     <a href="#">INÍCIO</a><a href="#servicos">SERVIÇOS</a><a href="#editor">ESTÚDIO</a><a href="#editor" class="nav-cta">ABRIR EDITOR&nbsp; →</a>
@@ -216,31 +216,25 @@ progress{width:100%;height:6px;display:block;margin-top:14px;accent-color:var(--
         <p class="helper">O editor ajusta o enquadramento para Reels e mantém a melhor taxa de quadros compatível com os clipes originais. Vídeos 4K serão redimensionados para Full HD.</p>
       </section>
       <section class="card">
-        <div class="card-head"><div class="card-title"><span class="num">04</span><h2>Trilha sonora</h2></div><span class="card-note">MÚSICA DO VÍDEO</span></div>
+        <div class="card-head"><div class="card-title"><span class="num">04</span><h2>Trilha sonora</h2></div><span class="card-note">OPCIONAL · GRATUITA</span></div>
         <div class="music-tabs">
-          <button type="button" class="music-tab active" data-music-tab="auto">AUTOMÁTICA</button>
-          <button type="button" class="music-tab" data-music-tab="search">PESQUISAR</button>
+          <button type="button" class="music-tab active" data-music-tab="none">SEM MÚSICA</button>
           <button type="button" class="music-tab" data-music-tab="upload">MINHA MÚSICA</button>
         </div>
-        <div class="music-panel active" id="music-auto">
-          <div class="field"><label for="musicMood">ESTILO DA TRILHA</label><select id="musicMood"><option value="cinematic">Cinematográfica · Premium</option><option value="energetic">Dinâmica · Esportiva</option><option value="elegant">Elegante · Sofisticada</option></select></div>
-          <p class="music-help">A seleção automática usará uma trilha que você já tenha enviado ou uma faixa autorizada que escolher no catálogo. O editor não baixa músicas comerciais sem licença.</p>
-        </div>
-        <div class="music-panel" id="music-search">
-          <div class="music-search-row"><input id="trackQuery" type="search" placeholder="Digite o nome da música ou artista"><button id="searchTracks" class="btn btn-gold" type="button">PESQUISAR</button></div>
-          <div id="musicResults" class="music-results"><p class="empty">Para pesquisar no catálogo integrado, é necessário conectar uma conta de catálogo musical com licença para uso comercial.</p></div>
-          <p class="music-help">A busca integrada será habilitada após configurar as credenciais e os direitos comerciais do catálogo. Por enquanto, você pode enviar uma faixa licenciada na opção “Minha música”.</p>
+        <div class="music-panel active" id="music-none">
+          <p class="music-help">O vídeo será exportado sem trilha adicionada. Depois, você poderá colocar uma música diretamente pelo Instagram ou outro editor.</p>
         </div>
         <div class="music-panel" id="music-upload">
-          <label class="btn btn-quiet" for="musicFile">ESCOLHER ARQUIVO DE ÁUDIO</label><input id="musicFile" type="file" accept="audio/*">
+          <label class="btn btn-quiet" for="musicFile">ESCOLHER MÚSICA DO DISPOSITIVO</label><input id="musicFile" type="file" accept="audio/*">
           <div id="musicName">Nenhuma música selecionada.</div>
-          <p class="music-help">Use uma música própria ou com licença que permita publicar vídeos comerciais da Lumina Auto Care.</p>
+          <div class="field" style="margin-top:12px"><label for="musicVolume">VOLUME DA MÚSICA</label><input id="musicVolume" type="range" min="0" max="100" value="70" style="width:100%;accent-color:var(--gold)"></div>
+          <p class="music-help">Escolha um arquivo de áudio salvo no tablet ou celular. Use músicas próprias ou com autorização para uso comercial.</p>
         </div>
         <audio id="musicPreview" controls style="width:100%;height:34px;margin-top:10px;display:none"></audio>
       </section>
       <section class="card render-card">
         <div class="card-head"><div class="card-title"><span class="num">05</span><h2>Finalizar projeto</h2></div></div>
-        <p class="render-copy">Edite automaticamente seus clipes, adicione a trilha sonora e exporte seu Reels em MP4 Full HD.</p>
+        <p class="render-copy">Organize seus clipes, escolha se deseja adicionar uma música do dispositivo e exporte seu Reels em MP4 Full HD.</p>
         <div class="render-actions"><button id="renderBtn" class="btn btn-gold">✦ &nbsp; GERAR VÍDEO</button><a id="download" hidden>↓ &nbsp; BAIXAR VÍDEO</a></div>
         <progress id="progress" max="100" value="0"></progress><div id="status" class="status" role="status">Adicione vídeos para começar.</div>
       </section>
@@ -289,68 +283,26 @@ $('previewBtn').onclick=async()=>{
  $('previewPlaceholder').hidden=true;video.hidden=false;video.src=clips[0].url;video.load();try{await video.play();say('Reproduzindo o primeiro clipe.')}catch(e){say('Toque em reproduzir no visualizador.')}
 };
 
-// Alternância entre música automática, pesquisa e arquivo próprio.
+// Música opcional: sem trilha por padrão ou arquivo local escolhido pelo usuário.
 document.querySelectorAll('[data-music-tab]').forEach(btn=>btn.addEventListener('click',()=>{
  document.querySelectorAll('[data-music-tab]').forEach(b=>b.classList.toggle('active',b===btn));
  document.querySelectorAll('.music-panel').forEach(p=>p.classList.toggle('active',p.id==='music-'+btn.dataset.musicTab));
+ if(btn.dataset.musicTab==='none'){
+  musicFile=null;
+  if(musicUrl){URL.revokeObjectURL(musicUrl);musicUrl=null;}
+  $('musicName').textContent='Nenhuma música selecionada.';
+  $('musicPreview').pause();$('musicPreview').removeAttribute('src');$('musicPreview').style.display='none';
+  $('musicFile').value='';
+ }
 }));
 $('musicFile').addEventListener('change',e=>{
  const f=e.target.files[0];if(!f)return;
  musicFile=f;if(musicUrl)URL.revokeObjectURL(musicUrl);musicUrl=URL.createObjectURL(f);
  $('musicName').textContent=f.name;$('musicPreview').src=musicUrl;$('musicPreview').style.display='block';
+ document.querySelector('[data-music-tab="upload"]').click();
  say('Trilha sonora carregada: '+f.name);
 });
-$('searchTracks').addEventListener('click',async()=>{
- const q=$('trackQuery').value.trim(),id=$('jamendoId').value.trim(),box=$('musicResults');
- if(!id){box.innerHTML='<p class="empty">Primeiro, informe o Client ID do catálogo Jamendo.</p>';return}
- if(!q){box.innerHTML='<p class="empty">Digite o nome de uma música ou artista.</p>';return}
- box.innerHTML='<p class="empty">Pesquisando faixas…</p>';
- try{
-  const url='https://api.jamendo.com/v3.0/tracks/?client_id='+encodeURIComponent(id)+'&format=json&limit=12&search='+encodeURIComponent(q)+'&include=licenses&probackground=true&audioformat=mp32';
-  const res=await fetch(url);if(!res.ok)throw new Error('O catálogo não respondeu. Confira o código de acesso.');
-  const data=await res.json();box.innerHTML='';
-  if(!data.results||!data.results.length){box.innerHTML='<p class="empty">Nenhuma faixa encontrada com esse termo. Tente outro nome.</p>';return}
-  data.results.forEach(t=>{
-   const row=document.createElement('div');row.className='track';
-   const info=document.createElement('div');info.className='track-info';
-   const title=document.createElement('b');title.textContent=t.name||'Faixa sem título';
-   const artist=document.createElement('small');artist.textContent=(t.artist_name||'Artista independente')+' · catálogo Jamendo';
-   info.append(title,artist);
-   const play=document.createElement('button');play.className='btn';play.textContent='OUVIR';
-   play.onclick=()=>{const a=$('musicPreview');a.src=t.audio;a.style.display='block';a.play().catch(()=>{});};
-   const choose=document.createElement('button');choose.className='btn btn-gold';choose.textContent='USAR';
-   choose.onclick=async()=>{
-    try{
-     const audioUrl=t.audiodownload||t.audio;const r=await fetch(audioUrl);if(!r.ok)throw new Error('Não foi possível obter o áudio desta faixa.');
-     const blob=await r.blob();musicFile=new File([blob],(t.name||'trilha').replace(/[^a-z0-9-_]/gi,'_')+'.mp3',{type:blob.type||'audio/mpeg'});
-     if(musicUrl)URL.revokeObjectURL(musicUrl);musicUrl=URL.createObjectURL(musicFile);
-     $('musicName').textContent='Catálogo: '+t.name;$('musicPreview').src=musicUrl;$('musicPreview').style.display='block';
-     document.querySelector('[data-music-tab="upload"]').click();say('Trilha selecionada. Verifique a licença comercial antes de publicar.');
-    }catch(err){say(err.message+' Baixe a faixa após licenciar e envie em “Minha música”.')}
-   };
-   row.append(info,play,choose);box.append(row);
-  });
- }catch(err){box.innerHTML='<p class="empty">'+(err.message||'Erro ao pesquisar. Verifique sua conexão e o Client ID.')+'</p>'}
-});
 
-async function getAutomaticTrack(){
- if(musicFile)return musicFile;
- const clientId=$('jamendoId')?.value.trim();
- if(!clientId)throw new Error('Para escolher a música automaticamente, informe o Client ID do catálogo com licença comercial ou envie uma música própria.');
- const mood=$('musicMood').value;
- const terms={cinematic:'cinematic instrumental ambient',energetic:'energetic electronic instrumental',elegant:'elegant luxury instrumental'};
- const url='https://api.jamendo.com/v3.0/tracks/?client_id='+encodeURIComponent(clientId)+'&format=json&limit=8&search='+encodeURIComponent(terms[mood])+'&include=licenses&probackground=true&audioformat=mp32';
- const res=await fetch(url);if(!res.ok)throw new Error('Não foi possível consultar o catálogo para a seleção automática.');
- const data=await res.json();const track=data.results?.find(t=>t.audiodownload||t.audio);
- if(!track)throw new Error('Não encontrei uma trilha adequada. Pesquise outra ou envie sua música.');
- const r=await fetch(track.audiodownload||track.audio);if(!r.ok)throw new Error('Não foi possível carregar a trilha selecionada.');
- const blob=await r.blob();
- musicFile=new File([blob],(track.name||'lumina-trilha').replace(/[^a-z0-9-_]/gi,'_')+'.mp3',{type:blob.type||'audio/mpeg'});
- if(musicUrl)URL.revokeObjectURL(musicUrl);musicUrl=URL.createObjectURL(musicFile);
- $('musicName').textContent='Automática: '+track.name+' — '+track.artist_name;
- $('musicPreview').src=musicUrl;$('musicPreview').style.display='block';
- return musicFile;
-}
 async function loadEngine(){
  if(ffmpegLoaded)return;
  say('Carregando o mecanismo profissional de edição. Na primeira vez pode demorar um pouco…');
@@ -385,10 +337,6 @@ $('renderBtn').onclick=async()=>{
  if(clips.length>10){say('Para manter o processamento estável no tablet, use no máximo 10 clipes por projeto.');return}
  busy=true;$('renderBtn').disabled=true;$('download').hidden=true;$('progress').value=0;
  try{
-  if(document.querySelector('[data-music-tab="auto"]').classList.contains('active')&&!musicFile){
-   say('Escolhendo uma trilha adequada ao estilo selecionado…');
-   await getAutomaticTrack();
-  }
   await loadEngine();
   const target=getDuration(),[w,h]=getSize(),fps=Number($('fps').value);
   const durations=await Promise.all(clips.map(c=>getClipDuration(c.file)));
@@ -413,7 +361,7 @@ $('renderBtn').onclick=async()=>{
   }
   filter.push(paired+'concat=n='+clips.length+':v=1:a=1[vout][aorig]');
   if(musicInputIndex>=0){
-   filter.push('['+musicInputIndex+':a:0]volume=0.78,afade=t=in:st=0:d=0.7,afade=t=out:st='+Math.max(0,total-1.2).toFixed(2)+':d=1.2[amusic]');
+   const musicVolume=Math.max(0,Math.min(1,Number($('musicVolume').value)/100));\n    filter.push('['+musicInputIndex+':a:0]volume='+musicVolume.toFixed(2)+',afade=t=in:st=0:d=0.7,afade=t=out:st='+Math.max(0,total-1.2).toFixed(2)+':d=1.2[amusic]');
    filter.push('[aorig][amusic]amix=inputs=2:duration=first:dropout_transition=2[aout]');
   } else {
    filter.push('[aorig]volume=1[aout]');
