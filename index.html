@@ -246,9 +246,6 @@ progress{width:100%;height:6px;display:block;margin-top:14px;accent-color:var(--
 </main>
 <footer class="footer">LUMINA AUTO CARE &nbsp;·&nbsp; SEU CARRO MERECE EXCELÊNCIA<br><span style="font-size:8px;letter-spacing:.05em">Fotografias ilustrativas: Unsplash e Pexels</span></footer>
 <script type="module">
-import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
-import { toBlobURL } from 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js';
-
 const $=id=>document.getElementById(id);
 let clips=[],busy=false,downloadUrl=null,musicFile=null,musicUrl=null,ffmpeg=null,ffmpegLoaded=false;
 const video=$('preview');
@@ -265,10 +262,16 @@ function refresh(){
  el.append(idx,name,up,down,del);box.append(el)});
 }
 function addFiles(files){
- for(const f of files){if(f.type.startsWith('video/'))clips.push({file:f,url:URL.createObjectURL(f)})}
+ let added=0;
+ const validExt=/\.(mp4|mov|m4v|webm|3gp|3g2|mkv|avi)$/i;
+ for(const f of Array.from(files||[])){
+  const isVideo=(f.type||'').toLowerCase().startsWith('video/')||validExt.test(f.name||'');
+  if(isVideo){clips.push({file:f,url:URL.createObjectURL(f)});added++;}
+ }
  refresh();
  if(clips.length){$('previewPlaceholder').hidden=true;video.hidden=false;video.src=clips[0].url;video.load()}
- say(clips.length+' vídeo(s) no projeto.');
+ if(added){say(added+' vídeo(s) adicionado(s). Total no projeto: '+clips.length+'.');}
+ else {say('Não reconheci o arquivo selecionado como vídeo. Tente escolher um arquivo .MP4 ou .MOV salvo em Fotos/Arquivos.');}
 }
 $('files').addEventListener('change',e=>{addFiles(e.target.files);e.target.value=''});
 const dz=$('dropzone');
@@ -306,6 +309,10 @@ $('musicFile').addEventListener('change',e=>{
 async function loadEngine(){
  if(ffmpegLoaded)return;
  say('Carregando o mecanismo profissional de edição. Na primeira vez pode demorar um pouco…');
+ const [{FFmpeg},{toBlobURL}]=await Promise.all([
+  import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js'),
+  import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js')
+ ]);
  ffmpeg=new FFmpeg();
  ffmpeg.on('log',({message})=>{if(message&&/error|invalid|unsupported/i.test(message))console.warn(message)});
  ffmpeg.on('progress',({progress})=>{$('progress').value=Math.max(0,Math.min(99,Math.round(progress*100)))});
@@ -361,7 +368,8 @@ $('renderBtn').onclick=async()=>{
   }
   filter.push(paired+'concat=n='+clips.length+':v=1:a=1[vout][aorig]');
   if(musicInputIndex>=0){
-   const musicVolume=Math.max(0,Math.min(1,Number($('musicVolume').value)/100));\n    filter.push('['+musicInputIndex+':a:0]volume='+musicVolume.toFixed(2)+',afade=t=in:st=0:d=0.7,afade=t=out:st='+Math.max(0,total-1.2).toFixed(2)+':d=1.2[amusic]');
+   const musicVolume=Math.max(0,Math.min(1,Number($('musicVolume').value)/100));
+   filter.push('['+musicInputIndex+':a:0]volume='+musicVolume.toFixed(2)+',afade=t=in:st=0:d=0.7,afade=t=out:st='+Math.max(0,total-1.2).toFixed(2)+':d=1.2[amusic]');
    filter.push('[aorig][amusic]amix=inputs=2:duration=first:dropout_transition=2[aout]');
   } else {
    filter.push('[aorig]volume=1[aout]');
