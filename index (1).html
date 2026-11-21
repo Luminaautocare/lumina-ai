@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>Lumina AI | Studio de Vídeos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@600;700&display=swap');
+:root{--black:#050505;--panel:#0d0e0e;--panel2:#141515;--line:#292929;--gold:#e88b08;--gold2:#ffad24;--gold3:#9d5c08;--white:#f6f6f4;--muted:#a1a19d;--radius:14px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#050505;color:var(--white);font:14px 'Montserrat',Arial,sans-serif;min-height:100vh}
+button,select{font:inherit}
+.topbar{height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,72px);background:#050505;border-bottom:1px solid #262626;position:relative;z-index:5}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit}
+.brand-symbol{font:700 43px 'Cinzel',Georgia,serif;color:var(--gold2);line-height:1;text-shadow:0 0 16px #e88b0844}
+.brand-name{font:700 19px 'Oswald',Arial,sans-serif;letter-spacing:.22em}
+.brand-name span{color:var(--gold2)}
+.brand-sub{font-size:8px;letter-spacing:.43em;color:#c18a3a;margin-top:3px}
+.nav{display:flex;align-items:center;gap:clamp(14px,3vw,38px)}
+.nav a{color:#d0d0cd;text-decoration:none;font-size:9px;letter-spacing:.14em;font-weight:600}
+.nav a:hover{color:var(--gold2)}
+.nav-cta{border:1px solid #888!important;border-radius:30px;padding:12px 18px;color:#fff!important}
+.hero{min-height:640px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:70px 18px 155px;background:#050505}
+.hero:before,.hero:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1}
+.hero:before{background:linear-gradient(90deg,#050505 0%,#050505b8 18%,#05050555 50%,#050505c9 100%)}
+.hero:after{background:linear-gradient(0deg,#050505 0%,transparent 55%,#05050555 100%)}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 54%;opacity:.78}
+.light-beam{position:absolute;z-index:2;top:32px;width:27%;height:3px;background:linear-gradient(90deg,transparent,#eee,#fff,transparent);box-shadow:0 0 18px #fff9;transform:rotate(18deg);opacity:.65}
+.light-beam.left{left:2%;transform:rotate(19deg)}
+.light-beam.right{right:2%;transform:rotate(-19deg)}
+.hero-content{position:relative;z-index:3;max-width:850px}
+.eyebrow{font-size:10px;letter-spacing:.34em;color:var(--gold2);font-weight:600;margin-bottom:18px}
+.hero h1{font:600 clamp(44px,8vw,88px)/.96 'Oswald',Impact,sans-serif;letter-spacing:.11em;margin:0;text-transform:uppercase;text-shadow:0 4px 24px #000}
+.hero h1 span{display:block;color:var(--gold2);margin-top:8px}
+.hero-copy{font-size:13px;line-height:1.8;color:#dededb;max-width:520px;margin:19px auto 22px}
+.hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{border:1px solid #555;background:#151515;color:#f5f5f5;border-radius:8px;padding:12px 17px;font-weight:700;font-size:10px;letter-spacing:.1em;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.btn-gold{background:linear-gradient(110deg,#9c5b08,#e88b08 58%,#ffb52f);border-color:#f5b84d;color:#120d05;box-shadow:0 6px 20px #d87b1838}
+.car-art{display:none}
+.hero-stats{position:absolute;right:clamp(16px,5vw,70px);top:50%;transform:translateY(-25%);z-index:2;text-align:left;display:grid;gap:23px}
+.stat{border-left:1px solid var(--gold3);padding-left:12px}
+.stat strong{display:block;font:500 24px 'Oswald',sans-serif;color:#fff}
+.stat span{font-size:8px;letter-spacing:.18em;color:#b9b9b4}
+.service-strip{position:relative;z-index:3;max-width:1120px;margin:-35px auto 0;padding:0 18px}
+.service-inner{display:grid;grid-template-columns:repeat(4,1fr);background:#0b0c0c;border:1px solid #333;border-radius:13px;box-shadow:0 18px 38px #000a;overflow:hidden}
+.service{padding:19px 17px;display:flex;gap:12px;align-items:center;border-right:1px solid #353535}
+.service:last-child{border:0}
+.service-icon{color:var(--gold2);font-size:24px;flex:0 0 auto}
+.service strong{display:block;font-size:9px;letter-spacing:.12em;margin-bottom:5px}
+.service small{display:block;color:#a7a7a2;font-size:9px;line-height:1.5}
+.section-title{text-align:center;margin:58px auto 23px;padding:0 16px}
+.section-title small{color:var(--gold2);letter-spacing:.28em;font-size:9px;font-weight:700}
+.section-title h2{font:500 clamp(25px,4vw,38px) 'Oswald',sans-serif;letter-spacing:.09em;margin:9px 0 0}
+.section-title h2 span{color:var(--gold2)}
+.page{max-width:1120px;margin:auto;padding:0 18px 45px}
+.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;align-items:start}
+.stack{display:grid;gap:16px}
+.card{background:linear-gradient(145deg,#121414,#0a0b0b);border:1px solid #303030;border-radius:var(--radius);padding:19px;box-shadow:0 12px 30px #0007}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.card-title{display:flex;align-items:center;gap:10px}
+.num{width:25px;height:25px;border:1px solid #a56817;border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-size:10px}
+h2{font-size:11px;letter-spacing:.15em;text-transform:uppercase;margin:0;font-weight:700}
+.card-note{color:#888;font-size:9px;letter-spacing:.12em}
+.dropzone{border:1px dashed #94601c;border-radius:10px;background:linear-gradient(135deg,#1d160c,#111);padding:25px 14px;text-align:center}
+.upload-icon{width:40px;height:40px;margin:0 auto 10px;border:1px solid #a56b1d;border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-size:21px}
+.dropzone strong{display:block;font-size:13px;margin-bottom:5px}
+.dropzone p{margin:0 0 13px;color:#999;font-size:10px}
+input[type=file]{display:none}
+#clips{display:grid;gap:7px;margin-top:12px}
+.empty{color:#888;font-size:10px;text-align:center;padding:8px 0}
+.clip{display:flex;align-items:center;gap:9px;padding:9px;background:#171919;border:1px solid #303030;border-radius:8px}
+.clip-index{width:25px;height:25px;flex:0 0 25px;border-radius:50%;background:#2a1b0b;color:var(--gold2);display:grid;place-items:center;font-size:10px}
+.clip span{flex:1;min-width:0;overflow-wrap:anywhere;font-size:11px;color:#eee}
+.clip button{padding:6px 9px;font-size:11px}
+.privacy,.helper{font-size:10px;line-height:1.55;color:#898983;margin-top:12px}
+.privacy span{color:#b5c5a0}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field label{display:block;color:#aaa;font-size:10px;margin:0 0 7px}
+select{width:100%;background:#090a0a;color:#eee;border:1px solid #3b3b3b;border-radius:8px;padding:11px 10px;outline:none;font-size:11px}
+.preview-shell{background:#050505;border:1px solid #303030;border-radius:10px;padding:9px}
+.preview-top{display:flex;justify-content:space-between;align-items:center;padding:3px 4px 9px;color:#92928d;font-size:9px;letter-spacing:.14em}
+.preview-indicator{color:#d4a04d}
+#preview{width:100%;max-height:370px;min-height:180px;display:block;object-fit:contain;background:#000;border-radius:6px}
+.preview-empty{min-height:180px;display:grid;place-items:center;text-align:center;color:#777;font-size:11px}
+.preview-empty b{display:block;color:#d5d5d1;font:500 20px 'Oswald',sans-serif;letter-spacing:.15em;margin-bottom:6px}
+.preview-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.btn-quiet{background:#171717;border-color:#3d3d3d}
+.render-card{background:linear-gradient(135deg,#211607,#101111 75%);border-color:#6b481c}
+.render-copy{font-size:10px;color:#aaa;line-height:1.6;margin:0 0 14px}
+.render-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#renderBtn{font-size:10px;letter-spacing:.14em;padding:13px 17px}
+#download{color:var(--gold2);text-decoration:none;font-size:10px;font-weight:700;padding:10px 0}
+progress{width:100%;height:6px;display:block;margin-top:14px;accent-color:var(--gold)}
+.status{font-size:10px;color:var(--gold2);min-height:18px;margin-top:8px}
+.tip{font-size:10px;color:#aaa;line-height:1.7;margin:0}
+.footer{border-top:1px solid #222;text-align:center;color:#777;font-size:9px;letter-spacing:.22em;padding:24px 10px 30px}
+@media(max-width:850px){.hero-stats{display:none}.service-inner{grid-template-columns:repeat(2,1fr)}.service:nth-child(2){border-right:0}.service:nth-child(-n+2){border-bottom:1px solid #353535}}
+@media(max-width:700px){.topbar{height:68px}.nav a:not(.nav-cta){display:none}.hero{min-height:520px;padding-bottom:130px}.hero h1{font-size:clamp(43px,12vw,68px)}.car-art{width:105vw;bottom:60px}.layout{grid-template-columns:1fr}.section-title{margin-top:48px}.service{padding:14px 11px}.service strong{font-size:8px}.service small{font-size:8px}}
+@media(max-width:390px){.settings-grid{grid-template-columns:1fr}.service-inner{grid-template-columns:1fr}.service{border-right:0!important;border-bottom:1px solid #353535}.service:last-child{border-bottom:0}.brand-name{font-size:16px}}
+
+.photo-gallery{max-width:1120px;margin:34px auto 0;padding:0 18px;display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+.photo-tile{position:relative;min-height:180px;border-radius:12px;overflow:hidden;border:1px solid #303030;background:#111}
+.photo-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.72);transition:transform .5s}
+.photo-tile:hover img{transform:scale(1.035)}
+.photo-tile span{position:absolute;left:17px;bottom:15px;z-index:1;color:#fff;font-size:10px;letter-spacing:.2em;font-weight:700;text-shadow:0 2px 10px #000}
+.music-box{margin-top:14px;padding:14px;border:1px solid #3b3327;border-radius:10px;background:#0b0c0c}
+.music-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.music-tab{border:1px solid #4a402f;background:#141414;color:#ddd;border-radius:7px;padding:9px 11px;font-size:9px;letter-spacing:.08em;cursor:pointer}
+.music-tab.active{border-color:var(--gold2);color:var(--gold2);background:#24190b}
+.music-panel{display:none}
+.music-panel.active{display:block}
+.music-search-row{display:flex;gap:8px}
+.music-search-row input{min-width:0;flex:1;background:#080909;color:#fff;border:1px solid #444;border-radius:8px;padding:11px;font:11px 'Montserrat',sans-serif}
+.music-results{display:grid;gap:7px;margin-top:10px}
+.track{display:flex;align-items:center;gap:9px;padding:9px;border:1px solid #303030;border-radius:8px;background:#151616}
+.track-info{flex:1;min-width:0}
+.track-info b{display:block;font-size:10px}
+.track-info small{display:block;color:#999;font-size:9px;margin-top:3px}
+.track button{font-size:9px;padding:7px 9px}
+.music-help{font-size:9px;line-height:1.6;color:#999;margin:9px 0 0}
+#musicFile{display:none}
+#musicName{font-size:10px;color:var(--gold2);margin-top:8px}
+.duration-row{display:flex;gap:8px}
+.duration-option{flex:1}
+.duration-option input{display:none}
+.duration-option span{display:block;text-align:center;padding:10px;border:1px solid #3d3d3d;border-radius:8px;background:#0b0c0c;color:#ddd;font-size:11px;cursor:pointer}
+.duration-option input:checked+span{border-color:var(--gold2);color:var(--gold2);background:#211709}
+.render-status{font-size:10px;color:#aaa;line-height:1.5;margin-top:8px}
+@media(max-width:700px){.photo-gallery{grid-template-columns:1fr}.photo-tile{min-height:160px}.hero{min-height:530px}.music-search-row{flex-direction:column}}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#">
+    <div class="brand-symbol">L</div>
+    <div><div class="brand-name">LUMINA <span>AI</span></div><div class="brand-sub">AUTO CARE · STUDIO</div></div>
+  </a>
+  <nav class="nav">
+    <a href="#">INÍCIO</a><a href="#servicos">SERVIÇOS</a><a href="#editor">ESTÚDIO</a><a href="#editor" class="nav-cta">ABRIR EDITOR&nbsp; →</a>
+  </nav>
+</header>
+<section class="hero">
+  <img class="hero-photo" src="https://images.unsplash.com/photo-1761312834150-4beefff097a7?auto=format&fit=crop&w=2200&q=85" alt="Carro preto recebendo lavagem detalhada em estúdio" fetchpriority="high">
+  <div class="light-beam left"></div><div class="light-beam right"></div>
+  <div class="hero-content">
+    <div class="eyebrow">ESTÉTICA AUTOMOTIVA · CONTEÚDO DE ALTO PADRÃO</div>
+    <h1>SEU TRABALHO.<span>EM DESTAQUE.</span></h1>
+    <p class="hero-copy">Crie vídeos que valorizam cada detalhe. Apresente o cuidado, a técnica e o resultado de cada serviço Lumina.</p>
+    <div class="hero-actions"><a class="btn btn-gold" href="#editor">ABRIR ESTÚDIO&nbsp; →</a><a class="btn" href="#servicos">CONHECER RECURSOS</a></div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><strong>01</strong><span>ADICIONE SEUS CLIPES</span></div>
+    <div class="stat"><strong>02</strong><span>ORGANIZE AS CENAS</span></div>
+    <div class="stat"><strong>03</strong><span>GERE SEU VÍDEO</span></div>
+  </div>
+  <svg class="car-art" viewBox="0 0 900 220" fill="none" aria-hidden="true">
+    <defs><linearGradient id="carstroke" x1="0" y1="0" x2="900" y2="220"><stop stop-color="#777"/><stop offset=".48" stop-color="#eee"/><stop offset="1" stop-color="#8c5a1b"/></linearGradient></defs>
+    <path d="M64 157 L101 139 Q148 125 206 119 L302 62 Q343 36 407 34 L572 39 Q628 43 676 91 L760 112 Q806 123 835 149 L846 172 L827 184 L778 187 Q760 143 716 143 Q669 143 651 188 L275 188 Q259 145 215 145 Q169 145 151 188 L92 184 Q65 181 64 157Z" stroke="url(#carstroke)" stroke-width="3"/>
+    <path d="M222 117 L316 67 Q349 47 407 47 L480 48 L480 116Z M495 48 L568 51 Q617 55 655 103 L495 116Z" stroke="#777" stroke-width="2"/>
+    <path d="M91 149 L171 132 M688 118 L778 135 M760 151 L828 157" stroke="#ddd" stroke-width="2" opacity=".65"/>
+    <path d="M672 131 L778 139" stroke="#e88b08" stroke-width="4" opacity=".9"/>
+    <circle cx="215" cy="178" r="39" stroke="#999" stroke-width="4"/><circle cx="215" cy="178" r="22" stroke="#777" stroke-width="3"/><circle cx="716" cy="178" r="39" stroke="#999" stroke-width="4"/><circle cx="716" cy="178" r="22" stroke="#777" stroke-width="3"/>
+    <path d="M215 139V217 M176 178H254 M716 139V217 M677 178H755" stroke="#777" stroke-width="2" opacity=".6"/>
+  </svg>
+</section>
+<section class="service-strip" id="servicos">
+  <div class="service-inner">
+    <div class="service"><div class="service-icon">◇</div><div><strong>LAVAGEM TÉCNICA</strong><small>Limpeza cuidadosa em cada detalhe</small></div></div>
+    <div class="service"><div class="service-icon">✧</div><div><strong>POLIMENTO</strong><small>Realce do brilho e acabamento</small></div></div>
+    <div class="service"><div class="service-icon">◈</div><div><strong>HIGIENIZAÇÃO</strong><small>Cuidado completo para o interior</small></div></div>
+    <div class="service"><div class="service-icon">◎</div><div><strong>DETALHAMENTO</strong><small>Apresentação de cada etapa do serviço</small></div></div>
+  </div>
+</section>
+<section class="photo-gallery" aria-label="Estética automotiva Lumina">
+  <div class="photo-tile"><img src="https://images.pexels.com/photos/4141958/pexels-photo-4141958.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Carro preto de luxo em garagem iluminada" loading="lazy"><span>BRILHO. PROTEÇÃO. EXCELÊNCIA.</span></div>
+  <div class="photo-tile"><img src="https://images.pexels.com/photos/6872163/pexels-photo-6872163.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Carro preto em ambiente de lavagem profissional" loading="lazy"><span>CUIDADO EM CADA DETALHE.</span></div>
+</section>
+<div class="section-title" id="editor"><small>PRODUÇÃO DE CONTEÚDO LUMINA</small><h2>ESTÚDIO DE <span>VÍDEOS</span></h2></div>
+<main class="page">
+  <div class="layout">
+    <div class="stack">
+      <section class="card">
+        <div class="card-head"><div class="card-title"><span class="num">01</span><h2>Adicionar cenas</h2></div><span class="card-note">VÍDEOS DO DISPOSITIVO</span></div>
+        <div class="dropzone" id="dropzone">
+          <div class="upload-icon">＋</div><strong>Adicione seus vídeos ao projeto</strong>
+          <p>Selecione clipes da galeria do tablet ou celular</p>
+          <label class="btn btn-gold" for="files">SELECIONAR VÍDEOS</label><input id="files" type="file" accept="video/*" multiple>
+        </div>
+        <div id="clips"><p class="empty">Seus clipes aparecerão aqui depois da seleção.</p></div>
+        <div class="privacy"><span>●</span> Seus arquivos permanecem no dispositivo. Nada é enviado para um servidor.</div>
+      </section>
+      <section class="card">
+        <div class="card-head"><div class="card-title"><span class="num">02</span><h2>Monitor de edição</h2></div><span class="card-note">PRÉ-VISUALIZAÇÃO</span></div>
+        <div class="preview-shell"><div class="preview-top"><span>VISUALIZADOR</span><span class="preview-indicator">● PRÉVIA</span></div>
+          <div id="previewPlaceholder" class="preview-empty"><div><b>LUMINA STUDIO</b>Adicione um clipe para começar a visualizar.</div></div>
+          <video id="preview" controls playsinline hidden></video>
+        </div>
+        <div class="preview-actions"><button id="previewBtn" class="btn btn-quiet">▶ &nbsp; VISUALIZAR PRIMEIRO CLIPE</button><button id="clearBtn" class="btn btn-quiet">LIMPAR PROJETO</button></div>
+      </section>
+    </div>
+    <div class="stack">
+      <section class="card">
+        <div class="card-head"><div class="card-title"><span class="num">03</span><h2>Formato do vídeo</h2></div></div>
+        <div class="settings-grid">
+          <div class="field"><label for="ratio">FORMATO</label><select id="ratio"><option value="9:16" selected>Vertical · Reels</option><option value="16:9">Horizontal</option><option value="1:1">Quadrado</option></select></div>
+          <div class="field"><label for="fps">QUADROS POR SEGUNDO</label><select id="fps"><option value="30" selected>30 FPS · Padrão</option><option value="60">60 FPS · Movimento suave</option></select></div>
+        </div>
+        <div class="field" style="margin-top:13px"><label>DURAÇÃO DO REELS</label><div class="duration-row">
+          <label class="duration-option"><input type="radio" name="duration" value="15"><span>15 segundos</span></label>
+          <label class="duration-option"><input type="radio" name="duration" value="30" checked><span>30 segundos</span></label>
+        </div></div>
+        <div class="quality-pill" style="margin-top:13px;border:1px solid #6b481c;border-radius:8px;padding:11px;background:#1b140a;color:#f2c477;font-size:10px">✓ EXPORTAÇÃO FULL HD · 1080 × 1920 · MP4</div>
+        <p class="helper">O editor ajusta o enquadramento para Reels e mantém a melhor taxa de quadros compatível com os clipes originais. Vídeos 4K serão redimensionados para Full HD.</p>
+      </section>
+      <section class="card">
+        <div class="card-head"><div class="card-title"><span class="num">04</span><h2>Trilha sonora</h2></div><span class="card-note">MÚSICA DO VÍDEO</span></div>
+        <div class="music-tabs">
+          <button type="button" class="music-tab active" data-music-tab="auto">AUTOMÁTICA</button>
+          <button type="button" class="music-tab" data-music-tab="search">PESQUISAR</button>
+          <button type="button" class="music-tab" data-music-tab="upload">MINHA MÚSICA</button>
+        </div>
+        <div class="music-panel active" id="music-auto">
+          <div class="field"><label for="musicMood">ESTILO DA TRILHA</label><select id="musicMood"><option value="cinematic">Cinematográfica · Premium</option><option value="energetic">Dinâmica · Esportiva</option><option value="elegant">Elegante · Sofisticada</option></select></div>
+          <p class="music-help">A seleção automática usará uma trilha que você já tenha enviado ou uma faixa autorizada que escolher no catálogo. O editor não baixa músicas comerciais sem licença.</p>
+        </div>
+        <div class="music-panel" id="music-search">
+          <div class="music-search-row"><input id="trackQuery" type="search" placeholder="Digite o nome da música ou artista"><button id="searchTracks" class="btn btn-gold" type="button">PESQUISAR</button></div>
+          <div id="musicResults" class="music-results"><p class="empty">Para pesquisar no catálogo integrado, é necessário conectar uma conta de catálogo musical com licença para uso comercial.</p></div>
+          <p class="music-help">A busca integrada será habilitada após configurar as credenciais e os direitos comerciais do catálogo. Por enquanto, você pode enviar uma faixa licenciada na opção “Minha música”.</p>
+        </div>
+        <div class="music-panel" id="music-upload">
+          <label class="btn btn-quiet" for="musicFile">ESCOLHER ARQUIVO DE ÁUDIO</label><input id="musicFile" type="file" accept="audio/*">
+          <div id="musicName">Nenhuma música selecionada.</div>
+          <p class="music-help">Use uma música própria ou com licença que permita publicar vídeos comerciais da Lumina Auto Care.</p>
+        </div>
+        <audio id="musicPreview" controls style="width:100%;height:34px;margin-top:10px;display:none"></audio>
+      </section>
+      <section class="card render-card">
+        <div class="card-head"><div class="card-title"><span class="num">05</span><h2>Finalizar projeto</h2></div></div>
+        <p class="render-copy">Edite automaticamente seus clipes, adicione a trilha sonora e exporte seu Reels em MP4 Full HD.</p>
+        <div class="render-actions"><button id="renderBtn" class="btn btn-gold">✦ &nbsp; GERAR VÍDEO</button><a id="download" hidden>↓ &nbsp; BAIXAR VÍDEO</a></div>
+        <progress id="progress" max="100" value="0"></progress><div id="status" class="status" role="status">Adicione vídeos para começar.</div>
+      </section>
+      <section class="card"><div class="card-head"><div class="card-title"><span class="num">i</span><h2>Dica de produção</h2></div></div>
+        <p class="tip">Grave cenas curtas e estáveis. Mostre os detalhes do processo, os acabamentos e o resultado final para valorizar cada serviço.</p>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="footer">LUMINA AUTO CARE &nbsp;·&nbsp; SEU CARRO MERECE EXCELÊNCIA<br><span style="font-size:8px;letter-spacing:.05em">Fotografias ilustrativas: Unsplash e Pexels</span></footer>
+<script type="module">
+import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
+import { toBlobURL } from 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js';
+
+const $=id=>document.getElementById(id);
+let clips=[],busy=false,downloadUrl=null,musicFile=null,musicUrl=null,ffmpeg=null,ffmpegLoaded=false;
+const video=$('preview');
+function say(t){$('status').textContent=t}
+function refresh(){
+ const box=$('clips');box.innerHTML='';
+ if(!clips.length){box.innerHTML='<p class="empty">Seus clipes aparecerão aqui depois da seleção.</p>';return}
+ clips.forEach((c,i)=>{const el=document.createElement('div');el.className='clip';
+ const idx=document.createElement('div');idx.className='clip-index';idx.textContent=String(i+1).padStart(2,'0');
+ const name=document.createElement('span');name.textContent=c.file.name;
+ const up=document.createElement('button');up.className='btn';up.textContent='↑';up.disabled=i===0;up.onclick=()=>{[clips[i-1],clips[i]]=[clips[i],clips[i-1]];refresh()};
+ const down=document.createElement('button');down.className='btn';down.textContent='↓';down.disabled=i===clips.length-1;down.onclick=()=>{[clips[i+1],clips[i]]=[clips[i],clips[i+1]];refresh()};
+ const del=document.createElement('button');del.className='btn';del.textContent='×';del.onclick=()=>{URL.revokeObjectURL(c.url);clips.splice(i,1);refresh()};
+ el.append(idx,name,up,down,del);box.append(el)});
+}
+function addFiles(files){
+ for(const f of files){if(f.type.startsWith('video/'))clips.push({file:f,url:URL.createObjectURL(f)})}
+ refresh();
+ if(clips.length){$('previewPlaceholder').hidden=true;video.hidden=false;video.src=clips[0].url;video.load()}
+ say(clips.length+' vídeo(s) no projeto.');
+}
+$('files').addEventListener('change',e=>{addFiles(e.target.files);e.target.value=''});
+const dz=$('dropzone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');addFiles(e.dataTransfer.files)});
+$('clearBtn').onclick=()=>{
+ if(busy)return;clips.forEach(c=>URL.revokeObjectURL(c.url));clips=[];refresh();video.pause();video.removeAttribute('src');video.load();video.hidden=true;$('previewPlaceholder').hidden=false;$('download').hidden=true;$('progress').value=0;say('Projeto limpo.');
+};
+$('previewBtn').onclick=async()=>{
+ if(!clips.length){say('Adicione pelo menos um vídeo.');return}
+ $('previewPlaceholder').hidden=true;video.hidden=false;video.src=clips[0].url;video.load();try{await video.play();say('Reproduzindo o primeiro clipe.')}catch(e){say('Toque em reproduzir no visualizador.')}
+};
+
+// Alternância entre música automática, pesquisa e arquivo próprio.
+document.querySelectorAll('[data-music-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('[data-music-tab]').forEach(b=>b.classList.toggle('active',b===btn));
+ document.querySelectorAll('.music-panel').forEach(p=>p.classList.toggle('active',p.id==='music-'+btn.dataset.musicTab));
+}));
+$('musicFile').addEventListener('change',e=>{
+ const f=e.target.files[0];if(!f)return;
+ musicFile=f;if(musicUrl)URL.revokeObjectURL(musicUrl);musicUrl=URL.createObjectURL(f);
+ $('musicName').textContent=f.name;$('musicPreview').src=musicUrl;$('musicPreview').style.display='block';
+ say('Trilha sonora carregada: '+f.name);
+});
+$('searchTracks').addEventListener('click',async()=>{
+ const q=$('trackQuery').value.trim(),id=$('jamendoId').value.trim(),box=$('musicResults');
+ if(!id){box.innerHTML='<p class="empty">Primeiro, informe o Client ID do catálogo Jamendo.</p>';return}
+ if(!q){box.innerHTML='<p class="empty">Digite o nome de uma música ou artista.</p>';return}
+ box.innerHTML='<p class="empty">Pesquisando faixas…</p>';
+ try{
+  const url='https://api.jamendo.com/v3.0/tracks/?client_id='+encodeURIComponent(id)+'&format=json&limit=12&search='+encodeURIComponent(q)+'&include=licenses&probackground=true&audioformat=mp32';
+  const res=await fetch(url);if(!res.ok)throw new Error('O catálogo não respondeu. Confira o código de acesso.');
+  const data=await res.json();box.innerHTML='';
+  if(!data.results||!data.results.length){box.innerHTML='<p class="empty">Nenhuma faixa encontrada com esse termo. Tente outro nome.</p>';return}
+  data.results.forEach(t=>{
+   const row=document.createElement('div');row.className='track';
+   const info=document.createElement('div');info.className='track-info';
+   const title=document.createElement('b');title.textContent=t.name||'Faixa sem título';
+   const artist=document.createElement('small');artist.textContent=(t.artist_name||'Artista independente')+' · catálogo Jamendo';
+   info.append(title,artist);
+   const play=document.createElement('button');play.className='btn';play.textContent='OUVIR';
+   play.onclick=()=>{const a=$('musicPreview');a.src=t.audio;a.style.display='block';a.play().catch(()=>{});};
+   const choose=document.createElement('button');choose.className='btn btn-gold';choose.textContent='USAR';
+   choose.onclick=async()=>{
+    try{
+     const audioUrl=t.audiodownload||t.audio;const r=await fetch(audioUrl);if(!r.ok)throw new Error('Não foi possível obter o áudio desta faixa.');
+     const blob=await r.blob();musicFile=new File([blob],(t.name||'trilha').replace(/[^a-z0-9-_]/gi,'_')+'.mp3',{type:blob.type||'audio/mpeg'});
+     if(musicUrl)URL.revokeObjectURL(musicUrl);musicUrl=URL.createObjectURL(musicFile);
+     $('musicName').textContent='Catálogo: '+t.name;$('musicPreview').src=musicUrl;$('musicPreview').style.display='block';
+     document.querySelector('[data-music-tab="upload"]').click();say('Trilha selecionada. Verifique a licença comercial antes de publicar.');
+    }catch(err){say(err.message+' Baixe a faixa após licenciar e envie em “Minha música”.')}
+   };
+   row.append(info,play,choose);box.append(row);
+  });
+ }catch(err){box.innerHTML='<p class="empty">'+(err.message||'Erro ao pesquisar. Verifique sua conexão e o Client ID.')+'</p>'}
+});
+
+async function getAutomaticTrack(){
+ if(musicFile)return musicFile;
+ const clientId=$('jamendoId')?.value.trim();
+ if(!clientId)throw new Error('Para escolher a música automaticamente, informe o Client ID do catálogo com licença comercial ou envie uma música própria.');
+ const mood=$('musicMood').value;
+ const terms={cinematic:'cinematic instrumental ambient',energetic:'energetic electronic instrumental',elegant:'elegant luxury instrumental'};
+ const url='https://api.jamendo.com/v3.0/tracks/?client_id='+encodeURIComponent(clientId)+'&format=json&limit=8&search='+encodeURIComponent(terms[mood])+'&include=licenses&probackground=true&audioformat=mp32';
+ const res=await fetch(url);if(!res.ok)throw new Error('Não foi possível consultar o catálogo para a seleção automática.');
+ const data=await res.json();const track=data.results?.find(t=>t.audiodownload||t.audio);
+ if(!track)throw new Error('Não encontrei uma trilha adequada. Pesquise outra ou envie sua música.');
+ const r=await fetch(track.audiodownload||track.audio);if(!r.ok)throw new Error('Não foi possível carregar a trilha selecionada.');
+ const blob=await r.blob();
+ musicFile=new File([blob],(track.name||'lumina-trilha').replace(/[^a-z0-9-_]/gi,'_')+'.mp3',{type:blob.type||'audio/mpeg'});
+ if(musicUrl)URL.revokeObjectURL(musicUrl);musicUrl=URL.createObjectURL(musicFile);
+ $('musicName').textContent='Automática: '+track.name+' — '+track.artist_name;
+ $('musicPreview').src=musicUrl;$('musicPreview').style.display='block';
+ return musicFile;
+}
+async function loadEngine(){
+ if(ffmpegLoaded)return;
+ say('Carregando o mecanismo profissional de edição. Na primeira vez pode demorar um pouco…');
+ ffmpeg=new FFmpeg();
+ ffmpeg.on('log',({message})=>{if(message&&/error|invalid|unsupported/i.test(message))console.warn(message)});
+ ffmpeg.on('progress',({progress})=>{$('progress').value=Math.max(0,Math.min(99,Math.round(progress*100)))});
+ const base='https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+ await ffmpeg.load({
+  coreURL:await toBlobURL(base+'/ffmpeg-core.js','text/javascript'),
+  wasmURL:await toBlobURL(base+'/ffmpeg-core.wasm','application/wasm')
+ });
+ ffmpegLoaded=true;
+}
+function safeExt(file){const m=(file.name.split('.').pop()||'mp4').toLowerCase().replace(/[^a-z0-9]/g,'');return m||'mp4'}
+function getDuration(){return Number(document.querySelector('input[name="duration"]:checked')?.value||30)}
+function getSize(){
+ const ratio=$('ratio').value;
+ if(ratio==='16:9')return [1920,1080];
+ if(ratio==='1:1')return [1080,1080];
+ return [1080,1920];
+}
+async function getClipDuration(file){
+ return new Promise(resolve=>{
+  const u=URL.createObjectURL(file),v=document.createElement('video');
+  v.preload='metadata';v.onloadedmetadata=()=>{const d=Number.isFinite(v.duration)?v.duration:8;URL.revokeObjectURL(u);resolve(d)};
+  v.onerror=()=>{URL.revokeObjectURL(u);resolve(8)};v.src=u;
+ });
+}
+$('renderBtn').onclick=async()=>{
+ if(busy)return;
+ if(!clips.length){say('Adicione pelo menos um vídeo antes de gerar.');return}
+ if(clips.length>10){say('Para manter o processamento estável no tablet, use no máximo 10 clipes por projeto.');return}
+ busy=true;$('renderBtn').disabled=true;$('download').hidden=true;$('progress').value=0;
+ try{
+  if(document.querySelector('[data-music-tab="auto"]').classList.contains('active')&&!musicFile){
+   say('Escolhendo uma trilha adequada ao estilo selecionado…');
+   await getAutomaticTrack();
+  }
+  await loadEngine();
+  const target=getDuration(),[w,h]=getSize(),fps=Number($('fps').value);
+  const durations=await Promise.all(clips.map(c=>getClipDuration(c.file)));
+  const totalSource=durations.reduce((a,b)=>a+b,0);
+  const perClip=target/clips.length;
+  const chosen=durations.map(d=>Math.min(d,perClip));
+  const total=chosen.reduce((a,b)=>a+b,0);
+  const args=[],filter=[];
+  for(let i=0;i<clips.length;i++){
+   const name='clip'+i+'.'+safeExt(clips[i].file);
+   await ffmpeg.writeFile(name,new Uint8Array(await clips[i].file.arrayBuffer()));
+   args.push('-i',name);
+   filter.push('['+i+':v:0]trim=duration='+chosen[i].toFixed(3)+',setpts=PTS-STARTPTS,scale='+w+':'+h+':force_original_aspect_ratio=increase,crop='+w+':'+h+',setsar=1,fps='+fps+',format=yuv420p[v'+i+']');
+   filter.push('['+i+':a:0]atrim=duration='+chosen[i].toFixed(3)+',asetpts=PTS-STARTPTS,volume=0.22[a'+i+']');
+  }
+  const paired=clips.map((c,i)=>'[v'+i+'][a'+i+']').join('');
+  let musicInputIndex=-1;
+  if(musicFile){
+   const ext=safeExt(musicFile),musicName='lumina-music.'+ext;
+   await ffmpeg.writeFile(musicName,new Uint8Array(await musicFile.arrayBuffer()));
+   musicInputIndex=clips.length;args.push('-stream_loop','-1','-i',musicName);
+  }
+  filter.push(paired+'concat=n='+clips.length+':v=1:a=1[vout][aorig]');
+  if(musicInputIndex>=0){
+   filter.push('['+musicInputIndex+':a:0]volume=0.78,afade=t=in:st=0:d=0.7,afade=t=out:st='+Math.max(0,total-1.2).toFixed(2)+':d=1.2[amusic]');
+   filter.push('[aorig][amusic]amix=inputs=2:duration=first:dropout_transition=2[aout]');
+  } else {
+   filter.push('[aorig]volume=1[aout]');
+  }
+  const out='lumina-reels.mp4';
+  const command=[...args,'-filter_complex',filter.join(';'),'-map','[vout]','-map','[aout]'];
+  command.push('-t',String(Math.min(target,total)),'-c:v','libx264','-preset','veryfast','-crf','18','-profile:v','high','-level','4.1','-pix_fmt','yuv420p','-movflags','+faststart');
+  command.push('-c:a','aac','-b:a','192k','-ar','48000');
+  command.push(out);
+  say('Editando '+clips.length+' cenas em Full HD. Mantenha esta página aberta.');
+  await ffmpeg.exec(command);
+  const data=await ffmpeg.readFile(out);
+  if(!data||!data.length)throw new Error('O arquivo final ficou vazio.');
+  const blob=new Blob([data.buffer],{type:'video/mp4'});
+  if(downloadUrl)URL.revokeObjectURL(downloadUrl);downloadUrl=URL.createObjectURL(blob);
+  const a=$('download');a.href=downloadUrl;a.download='lumina-auto-care-reels.mp4';a.hidden=false;
+  $('progress').value=100;say('Reels pronto em MP4 Full HD. Toque em “Baixar vídeo” para salvar.');
+  video.src=downloadUrl;video.hidden=false;$('previewPlaceholder').hidden=true;video.load();
+ }catch(err){
+  console.error(err);
+  let msg=err?.message||'erro inesperado';
+  if(/memory|allocation|out of memory/i.test(msg))msg='Memória insuficiente no tablet. Tente menos clipes ou vídeos menores.';
+  if(/hevc|h265|decoder|codec/i.test(msg))msg='Não foi possível decodificar este formato. No iPhone, escolha “Mais Compatível” para gravar em H.264.';
+  say('Não foi possível finalizar: '+msg+'.');
+ }finally{busy=false;$('renderBtn').disabled=false}
+};
+</script>
+</body>
+</html>
